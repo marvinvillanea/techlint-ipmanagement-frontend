@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import ComponentHandler from '../../../components/componentHandler';
-import formFields from "./formFields";
+
+import ComponentHandler from "../../../components/componentHandler";
+
+import formFields from "../formFields";
 
 const LoginFormContainer = () => {
     const { login } = useAuth();

@@ -1,6 +1,6 @@
 import { useEffect  } from "react";
-import LoginFormContainer from "./LoginFormContainer";
-import techlintLogo from '../../../../public/icon-long-techlint.svg';
+import techlintLogo from '../../../public/icon-long-techlint.svg';
+import LoginFormContainer from "./pages/LoginFormContainer";
 
 
 export default function Login() {
