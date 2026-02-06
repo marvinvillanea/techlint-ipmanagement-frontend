@@ -24,13 +24,11 @@ export default function Login() {
                     {/* Avatar */}
                     <div className="text-center mt-4 mb-5">
                       	<a href="https://techlint.com/" target="_blank">
-							<img src={techlintLogo} className="logo" alt="Vite logo" />
-						</a>
+                        <img src={techlintLogo} className="logo" alt="Vite logo" />
+                      </a>
                     </div>
 
-					
-
-					<LoginFormContainer />
+					          <LoginFormContainer />
 
                   </div>
                 </div>

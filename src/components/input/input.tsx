@@ -1,6 +1,6 @@
 const InputField = ({
     value = "",
-    eventHolder = (value: string) => {},
+    eventHolder = (_value: string): void => {},
     required = false,
     label = "Password",
     placeholder = "Password",

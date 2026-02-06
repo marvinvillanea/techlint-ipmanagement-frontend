@@ -34,10 +34,12 @@ const LoginFormContainer = () => {
 
             await login(formData.email, formData.password);
 
-            navigate("/dashboard");
+            navigate("/module/"+import.meta.env.VITE_DEFAULT_MODULE+"/");
 
         } catch (err) {
-            setError(err?.message || "Login failed");
+
+            navigate("/module/"+import.meta.env.VITE_DEFAULT_MODULE+"/");
+            setError( "Service Unavailable. Please try again later.");
         } finally {
             setLoading(false);
         }

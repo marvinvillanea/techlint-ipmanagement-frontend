@@ -1,27 +1,28 @@
 import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import ProtectedRoute from "../providers/ProtectedRoute";
+import NotFoundPage from "../../sharedPages/NotFoundPage";
+import CenteredSpinner from "../../components/CenteredSpinner/CenteredSpinner";
 
+// Lazy-loaded pages
 const Login = lazy(() => import("../../modules/auth/pages/Login"));
-const Dashboard = lazy(() => import("../../modules/auth/pages/Dashboard"));
+const ModuleController = lazy(() => import("../../modules/moduleController/moduleController"));
 
 export default function AppRoutes() {
-
-   
   return (
-    <Suspense fallback={<div className="spinner-border text-primary preload-spinner"></div>}>
+    // Suspense handles all lazy-loaded components
+    <Suspense fallback={<CenteredSpinner />}>
       <Routes>
-
-        <Route path="/" element={<Login />} />
+        {/* Public routes */}
+        <Route index element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+
+        {/* Protected route with dynamic params */}
+        <Route path="/module/:dynamic" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} />
+        <Route path="/module/:dynamic/:action" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} />
+
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

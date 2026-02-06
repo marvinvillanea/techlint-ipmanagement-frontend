@@ -1,15 +1,25 @@
-const Button = ({
-  type = "button",
-  children = null,
-  onClick = () => {},
+interface ButtonProps {
+  children?: React.ReactNode;
+  onClick?: () => void;
+  loading?: boolean;
+  loadingText?:"Loading...",
+  className?:"",
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset"; // <-- use union, not string
+}
+
+const ButtonComponent = ({
+  children,
+  onClick,
   loading = false,
   loadingText = "Loading...",
   disabled = false,
-  className = ""
-}) => {
+  className="",
+  type = "button"
+}: ButtonProps) => {
   return (
     <button
-      type={type}
+      type={type} // TS is happy now
       onClick={onClick}
       disabled={disabled || loading}
       className={`btn btn-label-success btn-lg btn-widest ${className}`}
@@ -19,4 +29,5 @@ const Button = ({
   );
 };
 
-export default Button;
+export default ButtonComponent;
+
