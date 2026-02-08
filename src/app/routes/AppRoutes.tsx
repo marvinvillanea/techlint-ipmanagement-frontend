@@ -18,12 +18,12 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
 
         {/* Protected route with dynamic params */}
-        <Route path="/module/:dynamic" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} />
-        <Route path="/module/:dynamic/:action" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} />
+        {/* <Route path="/module/:dynamic" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} />
+        <Route path="/module/:dynamic/:action" element={<ProtectedRoute><ModuleController /></ProtectedRoute>} /> */}
 
 
-        {/* <Route path="/module/:dynamic" element={<ModuleController />} />
-        <Route path="/module/:dynamic/:action" element={<ModuleController />} /> */}
+        <Route path="/module/:dynamic" element={<ModuleController />} />
+        <Route path="/module/:dynamic/:action" element={<ModuleController />} />
 
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFoundPage />} />

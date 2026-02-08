@@ -1,6 +1,9 @@
 import techlintLogo from '../../../public/icon-long-techlint.svg';
 import '../../App.css'
 const SideBar = () => {
+
+  const link = import.meta.env.VITE_API_URL + '/module/dashboard';
+
   return (
       <div className="aside">
         <div className="aside-header">
@@ -10,7 +13,9 @@ const SideBar = () => {
             {/*BEGIN Menu*/} 
             <div className="menu">
                 <div className="menu-item">
-                    <a href="index.html" data-menu-path="/index.html" className="menu-item-link">
+
+
+                    <a href={link} data-menu-path="dashboard" className="menu-item-link">
                         <div className="menu-item-icon">
                             <i className="fa fa-desktop"></i>
                         </div>

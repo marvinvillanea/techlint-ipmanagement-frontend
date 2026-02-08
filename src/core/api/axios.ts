@@ -9,6 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(config => {
   const token = tokenService.getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
+  config.headers["X-Client-Token"] = import.meta.env.VITE_CLIENT_TOKEN;
   return config;
 });
 
@@ -44,7 +45,8 @@ api.interceptors.response.use(
 
       return new Promise(resolve => {
         queue.push((token: string) => {
-          original.headers.Authorization = `Bearer ${token}`;
+            original.headers.Authorization = `Bearer ${token}`;
+
           resolve(api(original));
         });
       });

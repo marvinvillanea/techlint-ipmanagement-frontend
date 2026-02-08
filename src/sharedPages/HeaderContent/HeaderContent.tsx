@@ -1,8 +1,16 @@
-const HeaderContent = () => {
+const HeaderContent = (
+	{
+		eventHolder = (): void => {},
+		name = "",
+		email = "",
+		role = "",
+	}
+) => {
   return (
     <>
     <div className="header">
-    	{/*BEGIN Desktop Sticky Header*/}
+    	
+		{/*BEGIN Desktop Sticky Header*/}
 		<div className="sticky-header" id="sticky-header-desktop">
 			{/*BEGIN Header Holder*/}
 			<div className="header-holder header-holder-desktop">
@@ -14,7 +22,7 @@ const HeaderContent = () => {
 
 						<div className="dropdown">
 							<button className="btn btn-flat-primary widget13" data-bs-toggle="dropdown">
-								<div className="widget13-text"> Hi <strong>User</strong>
+								<div className="widget13-text"> Hi <strong>{name}</strong>
 								</div>
 								{/*BEGIN Avatar*/}
 								<div className="avatar avatar-info widget13-avatar">
@@ -40,8 +48,8 @@ const HeaderContent = () => {
 												{/*END Avatar*/}
 											</div>
 											<div className="rich-list-content">
-												<h3 className="rich-list-title text-white thumbnail-fullname">Guest</h3>
-												<span className="rich-list-subtitle text-white thumbnail-email">No email</span>
+												<h3 className="rich-list-title text-white thumbnail-fullname">{role}</h3>
+												<span className="rich-list-subtitle text-white thumbnail-email">{email}</span>
 											</div>
 										
 										</div>
@@ -62,7 +70,7 @@ const HeaderContent = () => {
 										</div>
 										{/*END Grid Nav*/}
 									</div>
-										<button className="btn btn-label-danger logout-trigger">Sign out</button>
+										<button className="btn btn-label-danger logout-trigger" onClick={eventHolder}>Sign out</button>
 								</div>
 								
 							</div>
@@ -74,6 +82,8 @@ const HeaderContent = () => {
 			{/*END Header Holder*/}
 		</div>
 		{/*END Desktop Sticky Header*/}
+		
+		
 		{/*BEGIN Header Holder*/}
 		<div className="header-holder header-holder-desktop">
 			<div className="header-container container-fluid g-4">
