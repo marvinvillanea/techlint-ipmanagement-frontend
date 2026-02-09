@@ -11,29 +11,48 @@ interface DynamicModalProps {
 const DynamicModal: React.FC<DynamicModalProps> = ({ isOpen, onClose, title, footer, children }) => {
     if (!isOpen) return null;
 
+    console.log(123);
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-xl shadow-lg w-11/12 max-w-lg p-6">
-                {/* Modal Header */}
-                {title && (
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold">{title}</h2>
-                        <button
-                            onClick={onClose}
-                            className="text-gray-500 hover:text-gray-700 font-bold text-xl"
-                        >
-                            &times;
-                        </button>
-                    </div>
-                )}
+        
+       <>
+        <div className="modal fade show d-block modal-animate">
+            <div className="modal-dialog modal-dialog-scrollable">
+            <div className="modal-content">
 
-                {/* Modal Body */}
-                <div className="mb-4">{children}</div>
+                <div className="modal-header">
+                <h5 className="modal-title">{title}</h5>
 
-                {/* Modal Footer */}
-                {footer && <div className="flex justify-end space-x-2">{footer}</div>}
+                <button
+                    type="button"
+                    className="btn-close"
+                    onClick={onClose}
+                />
+                </div>
+
+                <div className="modal-body">
+                {children}
+                </div>
+{/* 
+                {footer && (
+                <div className="modal-footer">
+                    {footer}
+                    <button className="btn btn-primary">Submit</button>
+					<button className="btn btn-outline-danger">Reset</button>
+                </div>
+                )} */}
+
+                <div className="modal-footer">
+                    <button className="btn btn-primary">Submit</button>
+					<button className="btn btn-outline-danger">Close</button>
+                </div>
+
+            </div>
             </div>
         </div>
+
+        {/* backdrop */}
+        <div className="modal-backdrop fade show"></div>
+        </>
     );
 };
 

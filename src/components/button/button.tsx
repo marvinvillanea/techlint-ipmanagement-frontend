@@ -4,8 +4,9 @@ interface ButtonProps {
   loading?: boolean;
   loadingText?:"Loading...",
   className?:"",
-  disabled?: boolean;
-  type?: "button" | "submit" | "reset"; // <-- use union, not string
+  disabled?: boolean,
+  type?: "button" | "submit" | "reset", // <-- use union, not string
+  colorType?:"";
 }
 
 const ButtonComponent = ({
@@ -15,14 +16,18 @@ const ButtonComponent = ({
   loadingText = "Loading...",
   disabled = false,
   className="",
-  type = "button"
+  type = "button",
+  colorType = "success"
 }: ButtonProps) => {
+
+  
+
   return (
     <button
       type={type} // TS is happy now
       onClick={onClick}
       disabled={disabled || loading}
-      className={`btn btn-label-success btn-lg btn-widest ${className}`}
+      className={`btn btn-label-${colorType}  btn-widest ${className}`}
     >
       {loading ? loadingText : children}
     </button>

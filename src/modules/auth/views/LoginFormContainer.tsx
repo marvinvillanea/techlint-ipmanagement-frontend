@@ -33,15 +33,14 @@ const LoginFormContainer = () => {
         try {
             setLoading(true);
             setError("");
-
+            console.log('LOGIN RUNNING');
             await login(formData.email, formData.password);
 
+           
             navigate("/module/"+import.meta.env.VITE_DEFAULT_MODULE+"/");
 
         } catch (err) {
-
-            navigate("/module/"+import.meta.env.VITE_DEFAULT_MODULE+"/");
-            setError( "Service Unavailable. Please try again later.");
+            setError("Please try again!. Wrong Credentials.");
         } finally {
             setLoading(false);
         }

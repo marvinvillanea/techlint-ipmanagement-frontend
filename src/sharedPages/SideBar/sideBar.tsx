@@ -1,98 +1,58 @@
+import React, { useState, useEffect } from "react";
 import techlintLogo from '../../../public/icon-long-techlint.svg';
-import '../../App.css'
+import '../../App.css';
+
 const SideBar = () => {
+    const host = window.location.origin; // origin = protocol + host
+    const menuItems = [
+        { name: "Dashboard", link: host + "/module/dashboard", icon: 'desktop' },
+        { name: "IP Management", link: host + "/module/IPManagement", icon: 'database' },
+        { name: "User Management", link: host + "/module/userManagement", icon: 'user-group' },
+    ];
 
-  const link = import.meta.env.VITE_API_URL + '/module/dashboard';
+    const [active, setActive] = useState(window.location.pathname); // default active based on current path
 
-  return (
-      <div className="aside">
-        <div className="aside-header">
-            <h3 className="aside-title"><img src={techlintLogo} className={'logo'} alt="TechLint" /></h3>
-        </div>
-        <div className="aside-body" data-simplebar data-simplebar-direction="ltr">
-            {/*BEGIN Menu*/} 
-            <div className="menu">
-                <div className="menu-item">
+    const handleClick = (link:any) => {
+        setActive(new URL(link).pathname); // set active path
+        window.location.href = link; // navigate to the link
+    };
 
-
-                    <a href={link} data-menu-path="dashboard" className="menu-item-link">
-                        <div className="menu-item-icon">
-                            <i className="fa fa-desktop"></i>
-                        </div>
-                        <span className="menu-item-text">Dashboard</span>
-                        <div className="menu-item-addon">
-                            <span className="badge badge-success">New</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div className="menu-item">
-                    <a href="index.html" data-menu-path="/index.html" className="menu-item-link">
-                        <div className="menu-item-icon">
-                            <i className="fa fa-user-group"></i>
-                        </div>
-                        <span className="menu-item-text">User Management</span>
-                        <div className="menu-item-addon">
-                            <span className="badge badge-success">New</span>
-                        </div>
-                    </a>
-                </div>
-
-                {/*BEGIN Menu Section*/}
-                <div className="menu-section">
-                    <div className="menu-section-icon">
-                        <i className="fa fa-ellipsis-h"></i>
-                    </div>
-                    <h2 className="menu-section-text">System Module</h2>
-                </div>
-                {/*END Menu Section*/}
-                <div className="menu-item">
-                    <button className="menu-item-link menu-item-toggle">
-                        <div className="menu-item-icon">
-                            <i className="fa fa-palette"></i>
-                        </div>
-                        <span className="menu-item-text">Base</span>
-                        <div className="menu-item-addon">
-                            <i className="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    {/*BEGIN Menu Submenu*/}
-                    <div className="menu-submenu">
-                        <div className="menu-item">
-                            <a href="elements/base/accordion.html" data-menu-path="/elements/base/accordion.html" className="menu-item-link">
-                                <i className="menu-item-bullet"></i>
-                                <span className="menu-item-text">Accordion</span>
-                            </a>
-                        </div>
-                        <div className="menu-item">
-                            <a href="elements/base/alert.html" data-menu-path="/elements/base/alert.html" className="menu-item-link">
-                                <i className="menu-item-bullet"></i>
-                                <span className="menu-item-text">Alert</span>
-                            </a>
-                        </div>
-                        <div className="menu-item">
-                            <a href="elements/base/badge.html" data-menu-path="/elements/base/badge.html" className="menu-item-link">
-                                <i className="menu-item-bullet"></i>
-                                <span className="menu-item-text">Badge</span>
-                            </a>
-                        </div>
-                        <div className="menu-item">
-                            <a href="elements/base/breadcrumb.html" data-menu-path="/elements/base/breadcrumb.html" className="menu-item-link">
-                                <i className="menu-item-bullet"></i>
-                                <span className="menu-item-text">Breadcrumb</span>
-                            </a>
-                        </div>
-                     
-                    </div>
-                    {/*END Menu Submenu*/}
-                </div>
-                
-                
+    return (
+        <div className="aside">
+            <div className="aside-header">
+                <h3 className="aside-title">
+                    <img src={techlintLogo} className={'logo'} alt="TechLint" />
+                </h3>
             </div>
-            {/*END Menu*/}
+            <div className="aside-body" data-simplebar data-simplebar-direction="ltr">
+                {/*BEGIN Menu*/}
+                <div className="menu">
+                    {menuItems.map((item, index) => (
+                        <div className="menu-item" key={index}>
+                            <a
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleClick(item.link);
+                                }}
+                                data-menu-path={item.name.toLowerCase()}
+                                className={`menu-item-link ${active === new URL(item.link).pathname ? "active" : ""}`}
+                            >
+                                <div className="menu-item-icon">
+                                    <i className={`fa fa-${item.icon}`}></i>
+                                </div>
+                                <span className="menu-item-text">{item.name}</span>
+                                <div className="menu-item-addon">
+                                    <span className="badge badge-success">New</span>
+                                </div>
+                            </a>
+                        </div>
+                    ))}
+                </div>
+                {/*END Menu*/}
+            </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default SideBar;

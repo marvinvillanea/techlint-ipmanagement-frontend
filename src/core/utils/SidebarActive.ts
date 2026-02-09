@@ -10,7 +10,7 @@ const Sidebar = ({ active = false }) => {
 
         // cleanup kapag unmount
         return () => document.body.classList.remove("aside-active");
-    }, [active]);
+    }, []);
 
     return null;
 };
