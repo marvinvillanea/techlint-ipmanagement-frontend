@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-// import DataTableDynamic from "../../../components/table/table";
 import ComponentHandler from "../../../components/componentHandler";
 import ButtonPermission from "../../../core/utils/createPermissionButton";
-import { useUsers } from "../../../core/hooks/useUsers/useUsers";
 import Loading from "../../../components/CenteredSpinner/Loading";
+import { useViewData } from "../../../core/hooks/useViewData/useViewData";
+
 
 type TablePageProps = {
   permission: string;       // e.g. "all" or "add|delete"
@@ -13,24 +13,45 @@ type TablePageProps = {
 
 const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Config }) => {
   
-  console.log(Config);
+    console.log('STARTT NOOWWWW');
+    console.log(Config);
 
 
-  const [page,setPage]=useState(1);
-  const [search,setSearch]=useState("");
+    const [page,setPage]=useState(1);
+    const [search,setSearch]=useState("");
 
-  const {data,isFetching}= useUsers(page,search);
+    //const {data,isFetching}= useUsers(page,search);
 
 
-  if (isFetching && !data && Config) {
-    return <Loading/>;
-  }
+    const { data, isFetching, error } = useViewData(
+        page,
+        search,
+        Config?.source,
+        Config?.column  ??[]
+    );
 
-  const totalPages = data
-  ? Math.ceil(data.total / data.perPage)
-  : 1;
-  console.log(data);
+        
+    if (!Config) {
+        return <Loading />;
+    }
+    
+    if (error) {
+        return <div>Error loading data</div>;
+    }
 
+    if (isFetching && !data) {
+        return <Loading />;
+    }
+
+    const totalPages = data?.data.total && data?.data.per_page
+    ? Math.ceil(data.data.total / data.data.per_page)
+    : 1;
+    
+
+    console.log('dsafdsafdasfsadf', data?.data.data)
+    console.log(data);
+
+    console.log(Config);
 
 
 
@@ -42,11 +63,11 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                   <div className="portlet">
                       <div className="portlet-header portlet-header-bordered">
                           <h3 className="portlet-title">
-                            <ButtonPermission permission={permission||''} available_buttons={available_buttons||''} />
+                            <ButtonPermission permission={permission||''} available_buttons={available_buttons||''} Config={Config} />
                           </h3>
                       </div>
                       <div className="portlet-body">
-                          <p><strong>Datatables</strong> has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable()</code>. Searching, ordering and paging goodness will be immediately added to the table, as shown in this example.</p>
+                          <p ><strong >{Config?.module_name}</strong><span className="text-danger"> {Config?.description}</span></p>
                           
                           <input
                               className="form-control mb-2"
@@ -64,7 +85,7 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                               
                               <ComponentHandler.DynamicTable
                                 columns={Config?.column}
-                                data={data?.data || []}
+                                data={data?.data?.data || []}
                                 permission={permission || ''}
                                 action={available_buttons || ''}
                               />
@@ -112,53 +133,7 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                               Next
                           </button>
                       </div>
-                          {/* <table  className="table table-bordered table-striped table-hover">
-                              <thead>
-                                  <tr>
-                                      <th>ID</th>
-                                      <th>Card ID</th>
-                                      <th>Name</th>
-                                      <th>Position</th>
-                                      <th>Office</th>
-                                      <th>Age</th>
-                                      <th>Start date</th>
-                                      <th>Salary</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td>1</td>
-                                      <td>629047</td>
-                                      <td>Tiger Nixon</td>
-                                      <td>System Architect</td>
-                                      <td>Edinburgh</td>
-                                      <td>61</td>
-                                      <td>2011/04/25</td>
-                                      <td>$320,800</td>
-                                  </tr>
-                                  <tr>
-                                      <td>2</td>
-                                      <td>629547</td>
-                                      <td>Garrett Winters</td>
-                                      <td>Accountant</td>
-                                      <td>Tokyo</td>
-                                      <td>63</td>
-                                      <td>2011/07/25</td>
-                                      <td>$170,750</td>
-                                  </tr>
-                                  <tr>
-                                      <td>3</td>
-                                      <td>129547</td>
-                                      <td>Ashton Cox</td>
-                                      <td>Junior Technical Author</td>
-                                      <td>San Francisco</td>
-                                      <td>66</td>
-                                      <td>2009/01/12</td>
-                                      <td>$86,000</td>
-                                  </tr>
-                                  
-                              </tbody>
-                          </table> */}
+                         
                       </div>
                   </div>
               </div>

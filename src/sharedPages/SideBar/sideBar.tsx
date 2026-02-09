@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import techlintLogo from '../../../public/icon-long-techlint.svg';
 import '../../App.css';
+import { menuItems } from "../../config/menuItems";
 
 const SideBar = () => {
-    const host = window.location.origin; // origin = protocol + host
-    const menuItems = [
-        { name: "Dashboard", link: host + "/module/dashboard", icon: 'desktop' },
-        { name: "IP Management", link: host + "/module/IPManagement", icon: 'database' },
-        { name: "User Management", link: host + "/module/userManagement", icon: 'user-group' },
-    ];
 
     const [active, setActive] = useState(window.location.pathname); // default active based on current path
 

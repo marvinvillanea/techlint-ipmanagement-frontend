@@ -32,19 +32,18 @@ const DynamicModal: React.FC<DynamicModalProps> = ({ isOpen, onClose, title, foo
                 <div className="modal-body">
                 {children}
                 </div>
-{/* 
-                {footer && (
-                <div className="modal-footer">
-                    {footer}
-                    <button className="btn btn-primary">Submit</button>
-					<button className="btn btn-outline-danger">Reset</button>
-                </div>
-                )} */}
 
-                <div className="modal-footer">
+
+                {footer}
+
+                {/* <div className="modal-footer">
+                   
+                </div> */}
+
+                {/* <div className="modal-footer">
                     <button className="btn btn-primary">Submit</button>
 					<button className="btn btn-outline-danger">Close</button>
-                </div>
+                </div> */}
 
             </div>
             </div>

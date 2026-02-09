@@ -68,6 +68,7 @@ const ModuleController = () => {
 
 
             <div className="holder">
+                
                     <SideBar/>
 
                     <div className="wrapper ">

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import ButtonComponent from "../../components/button/button";
 import DynamicModal from "../../components/modal/modal";
+import Loading from "../../components/CenteredSpinner/Loading";
+import DynamicForm from "./DynamicForm";
 
 type ButtonPermissionProps = {
   permission: string;       // e.g. "all" or "add|delete"
   available_buttons: string; // e.g. "add|delete|view|edit|all"
+  Config:any
 };
 
-const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, available_buttons }) => {
+const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, available_buttons, Config }) => {
   
   // convert permission to array
   const perms = permission === "all" ? ["add"] : permission.split("|");
@@ -16,10 +19,14 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
   const buttonsToShow = perms.includes("add") ? ["add"] : [];
 
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const handleOpen = () => setIsOpen(true);
-    const handleClose = () => setIsOpen(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  if (!Config) {
+      return <Loading />;
+  }
 
 
   return (
@@ -37,13 +44,15 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
         ))}
       </div>
 
+        
+
       <DynamicModal
         isOpen={isOpen}
         onClose={handleClose}
-        title="User Details"
+        title={'Add ' + Config.module_name}
+        children={<DynamicForm Config={Config} modalClose={handleClose} />}
         >
-      
-        </DynamicModal>
+      </DynamicModal>
     </>
   );
 };
