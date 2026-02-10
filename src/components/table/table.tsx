@@ -3,82 +3,17 @@ import {
   getCoreRowModel,
   flexRender
 } from "@tanstack/react-table";
-import ButtonComponent from "../button/button";
-import { useState } from "react";
-import DynamicModal from "../modal/modal";
-export default function DataTable({ columns, data, permission, action }) {
-
-  const permissionArr =
-    permission === "all" ? action.split("|") : permission.split("|");
-
-  const filteredActions = action
-    .split("|")
-    .filter(a => permissionArr.includes(a))
-    .filter(a => a !== "add" && a !== "all");
-
-  const actionColumn = {
-    id: "actions",
-    header: () => <span style={{ width: 80 }}>Action</span>,
-    cell: ({ row }) => (
-      <div style={{ display: "flex", gap: "4px" }}>
-        {filteredActions.includes("view") && (
-          <ButtonComponent 
-          type="button"
-          colorType="primary"
-          onClick={() => handleOpen(row)}
-          >
-            <i className="fa fa-eye " style={{ cursor: "pointer" }} />
-          </ButtonComponent>
-          
-        )}
-
-        {filteredActions.includes("edit") && (
-           <ButtonComponent 
-            type="button"
-            colorType="warning"
-            onClick={() => handleOpen(row)}
-            >
-            <i className="fa fa-edit" style={{ cursor: "pointer" }} />
-          </ButtonComponent>
-        )}
-
-        {filteredActions.includes("delete") && (
-        
-          <ButtonComponent 
-            type="button"
-            colorType="danger"
-            onClick={() => handleOpen(row)}
-          >
-          <i className="fa fa-trash " style={{ cursor: "pointer" }} />
-          </ButtonComponent>
-        )}
-      </div>
-    )
-  };
+export default function DataTable({ columns, data}) {
 
   const table = useReactTable({
-    columns: [...columns,actionColumn], // ⭐ FIRST COLUMN
+    columns: [...columns], // ⭐ FIRST COLUMN
     data,
     getCoreRowModel: getCoreRowModel()
   });
 
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const handleOpen = (rowData) => {
-    setSelectedRow(rowData);
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    setSelectedRow(null);
-  };
-
   return (
 
-    <>
     <table className="table table-bordered table-striped table-hover">
       <thead>
         {table.getHeaderGroups().map(g => (
@@ -104,21 +39,6 @@ export default function DataTable({ columns, data, permission, action }) {
         ))}
       </tbody>
     </table>
-
-    <DynamicModal
-      isOpen={isOpen}
-      onClose={handleClose}
-      title="User Details"
-    >
-      {selectedRow && (
-        <div>
-          <p>Name: {selectedRow.name}</p>
-          <p>Email: {selectedRow.email}</p>
-          <p>Role: {selectedRow.role}</p>
-        </div>
-      )}
-    </DynamicModal>
-    </>
 
   );
 }

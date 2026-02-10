@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import ComponentHandler from "../../../components/componentHandler";
-import ButtonPermission from "../../../core/utils/createPermissionButton";
+import ButtonPermission from "./createPermissionButton";
 import Loading from "../../../components/CenteredSpinner/Loading";
 import { useViewData } from "../../../core/hooks/useViewData/useViewData";
-
-
+import ButtonComponent from "../../../components/button/button";
+import DynamicModal from "../../../components/modal/modal";
+import DynamicForm from "./DynamicForm";
 type TablePageProps = {
   permission: string;       // e.g. "all" or "add|delete"
   available_buttons: string; // e.g. "add|delete|view|edit|all"
@@ -30,6 +31,86 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
         Config?.column  ??[]
     );
 
+
+    const totalPages = data?.data.total && data?.data.per_page
+    ? Math.ceil(data.data.total / data.data.per_page)
+    : 1;
+
+    const permissionArr =
+        permission === "all" ? available_buttons.split("|") : permission.split("|");
+
+    const filteredActions = available_buttons
+        .split("|")
+        .filter(a => permissionArr.includes(a))
+        .filter(a => a !== "add" && a !== "all");
+
+   
+    const actionColumn = {
+        id: "actions",
+        header: () => <span style={{ width: 80 }}>Action</span>,
+        cell: ({ row }) => (
+        <div style={{ display: "flex", gap: "4px" }}>
+            {filteredActions.includes("view") && (
+            <ButtonComponent 
+            type="button"
+            colorType="primary"
+            onClick={() =>  handleOpenModal(row, "view")}
+            >
+                <i className="fa fa-eye " style={{ cursor: "pointer" }} />
+            </ButtonComponent>
+            
+            )}
+
+            {filteredActions.includes("edit") && (
+            <ButtonComponent 
+                type="button"
+                colorType="warning"
+                onClick={() =>  handleOpenModal(row, "edit")}
+                >
+                <i className="fa fa-edit" style={{ cursor: "pointer" }} />
+            </ButtonComponent>
+            )}
+
+            {filteredActions.includes("delete") && (
+            
+            <ButtonComponent 
+                type="button"
+                colorType="danger"
+                onClick={() =>  handleOpenModal(row, "delete")}
+            >
+            <i className="fa fa-trash " style={{ cursor: "pointer" }} />
+            </ButtonComponent>
+            )}
+        </div>
+        )
+    };
+
+    const columns = useMemo(() => {
+        return [...(Config?.column ?? []), actionColumn];
+    }, [Config, actionColumn]);
+
+
+
+    
+    
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const [actionType, setActionType] = useState("");
+
+    const handleClose = () => {
+        setIsOpen(false);
+        setSelectedRow(null);
+        setActionType("");
+    };
+
+    const handleOpenModal = (row: any, type: string) => {
+        console.log(row.original?? row, type);
+        setSelectedRow(row.original ?? row);
+        setActionType(type);
+        setIsOpen(true);
+    };
+
         
     if (!Config) {
         return <Loading />;
@@ -43,15 +124,8 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
         return <Loading />;
     }
 
-    const totalPages = data?.data.total && data?.data.per_page
-    ? Math.ceil(data.data.total / data.data.per_page)
-    : 1;
-    
-
-    console.log('dsafdsafdasfsadf', data?.data.data)
-    console.log(data);
-
-    console.log(Config);
+    console.log('selectedRow',selectedRow);
+    // TABLE FUNCTION AND DATA COLUMN 
 
 
 
@@ -84,10 +158,8 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                           <div style={{ position: "relative" }}>
                               
                               <ComponentHandler.DynamicTable
-                                columns={Config?.column}
+                                columns={columns||[]}
                                 data={data?.data?.data || []}
-                                permission={permission || ''}
-                                action={available_buttons || ''}
                               />
 
                               {isFetching && (
@@ -95,6 +167,40 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                                   <Loading />
                                 </div>
                               )}
+
+
+
+
+                            <DynamicModal
+                                isOpen={isOpen}
+                                onClose={handleClose}
+                                title={`${Config?.module_name} - ${actionType?.toUpperCase()}`}
+                            >
+                                {selectedRow && (
+                                    <>
+                                        {actionType === "view" && (
+                                            <pre>{JSON.stringify(selectedRow, null, 2)}</pre>
+                                        )}
+
+                                        {actionType === "edit" && (
+                                            <div>
+                                            <DynamicForm
+                                                Config={Config??{}}
+                                                modalClose={handleClose}
+                                                data={selectedRow ?? {}}
+                                                type={actionType}
+                                            />
+                                            </div>
+                                        )}
+
+                                        {actionType === "delete" && (
+                                            <div>
+                                                <p>Are you sure delete ID: {selectedRow?.id}?</p>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </DynamicModal>
 
                             </div>
                           

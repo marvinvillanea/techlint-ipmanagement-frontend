@@ -7,7 +7,6 @@ import SideBar from "../../sharedPages/SideBar/sideBar";
 import HeaderContent from "../../sharedPages/HeaderContent/HeaderContent";
 import FooterContent from "../../sharedPages/FooterContent/FooterContent";
 import { LoadController } from "../../core/utils/controllerLoader";
-
 import TablePage from "./views/table";
 import NotFoundPage from "../../sharedPages/NotFoundPage";
 import ErrorBoundary from "../../app/providers/ErrorBoundary";
@@ -81,8 +80,8 @@ const ModuleController = () => {
 
                                 <ErrorBoundary>
                                        <TablePage 
-                                            permission={user.permission} 
-                                            available_buttons={Config.button}
+                                            permission={user?.permission} 
+                                            available_buttons={Config?.button}
                                             Config ={Config}
                                         />
                                 </ErrorBoundary>

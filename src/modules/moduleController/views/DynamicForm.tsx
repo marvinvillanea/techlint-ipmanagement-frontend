@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import InputField from "../../components/input/input";
-import Loading from "../../components/CenteredSpinner/Loading";
-import { Navigate } from "react-router-dom";
-import ComponentHandler from "../../components/componentHandler";
-import api from "../api/axios";
-
+import React, { useState,useEffect } from "react";
+import InputField from "../../../components/input/input";
+import Loading from "../../../components/CenteredSpinner/Loading";
+import { Navigate,useParams } from "react-router-dom";
+import ComponentHandler from "../../../components/componentHandler";
+import api from "../../../core/api/axios";
+import Swal from "sweetalert2";
 type DynamicFormProps = {
     Config:any;
     modalClose: () => void;
+    data?: Record<string, any>;
+    type:string;
 };
-const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose }) => {
+const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type}) => {
   // Define your form structure
     
-    if (!Config) {
-        return <Loading />;
-    }
+ 
     const formFields = Config.form;
 
     // const navigate = useNavigate();
@@ -34,6 +34,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose }) => {
         [name]: value
         }));
     };
+    
+    const { dynamic, action } = useParams(); // dynamic = "auth", action = "register"
 
 
     const submit = async (e: { preventDefault: () => void; }) => {
@@ -45,27 +47,63 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose }) => {
             console.log('LOGIN RUNNING');
             // await login(formData.email, formData.password);
 
+            const { data } = await api.post(`/process/${dynamic}/${type}`, formData);
 
-            const { data } = await api.post("/auth/register",formData);
+            console.log(data);
 
+            // if (data?.status) {
+            //     window.location.reload(); // reload page
+            // }
 
             if (data?.status) {
-                window.location.reload(); // reload page
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data?.message || 'Saved successfully!',
+                    confirmButtonText: 'OK'
+                });
+
+                window.location.reload();
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data?.message || 'Something went wrong!',
+                    confirmButtonText: 'OK'
+                });
             }
 
            
             // navigate("/module/"+import.meta.env.VITE_DEFAULT_MODULE+"/");
 
         } catch (err) {
-            setError('Email already Registered!.');
+            setError('Email already Registered!.' + err);
         } finally {
             setLoading(false);
         }
     };
 
+
+    useEffect(() => {
+        if (!data) return;
+
+        const initialData = Object.fromEntries(
+            formFields.map(f => [f.name, data[f.name] ?? ""])
+        );
+
+        setFormData(initialData);
+    }, [data, formFields]);
+
+    const filteredFormFields = formFields.filter(f => {
+        // Remove password field on edit
+        if (type === "edit" && f.type === "password") return false;
+        return true;
+    });
+
+
     return (
         <form className="d-grid gap-3 was-validated" onSubmit={submit}>
-                {formFields.map((field) => {
+                {filteredFormFields.map((field) => {
                     // Render a custom HTML field if type === "html"
                     if (field.type === "html") {
                     return (

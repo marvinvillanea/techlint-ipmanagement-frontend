@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ButtonComponent from "../../components/button/button";
-import DynamicModal from "../../components/modal/modal";
-import Loading from "../../components/CenteredSpinner/Loading";
+import ButtonComponent from "../../../components/button/button";
+import DynamicModal from "../../../components/modal/modal";
+import Loading from "../../../components/CenteredSpinner/Loading";
 import DynamicForm from "./DynamicForm";
 
 type ButtonPermissionProps = {
@@ -50,7 +50,7 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
         isOpen={isOpen}
         onClose={handleClose}
         title={'Add ' + Config.module_name}
-        children={<DynamicForm Config={Config} modalClose={handleClose} />}
+        children={<DynamicForm Config={Config} modalClose={handleClose} data={null} type="add" />}
         >
       </DynamicModal>
     </>
