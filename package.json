@@ -12,12 +12,14 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",
     "@tanstack/react-table": "^8.21.3",
+    "apexcharts": "^3.45.2",
     "axios": "^1.13.4",
     "datatables.net": "^2.3.7",
     "datatables.net-bs5": "^2.3.7",
     "datatables.net-dt": "^2.3.7",
     "jquery": "^4.0.0",
     "react": "^19.2.0",
+    "react-apexcharts": "^1.4.1",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
     "sweetalert2": "^11.26.18"

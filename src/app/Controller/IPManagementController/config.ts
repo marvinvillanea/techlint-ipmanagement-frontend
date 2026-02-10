@@ -2,7 +2,7 @@ export default function () {
     return { //config
         component_type: 1, // 1 table | 0 content
         description:': This module handles IP`s Management, including adding, editing, and deleting users.',
-        module_name: 'IP`s Management',
+        module_name: 'IPs Management',
         source:'v_iplist', //views
         button: "view|delete|edit|add", //action available
         column: [ // table header

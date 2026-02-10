@@ -31,16 +31,20 @@ const ModuleController = () => {
     const [Config, setConfig] = useState<any>([]);
 
     const [ControllerFuncs, setControllerFuncs] = useState<any>({});
-    const [Component, setComponent] = useState<any>(null);
-
+    // const [Component, setComponent] = useState<any>(null);
+    // const [DynamicContent, setDynamicContent] = useState<any>(null);
     useEffect(() => {
         if (dynamic) {
 
             LoadController(dynamic).then(res => {
-                setComponent(() => res.component);
+                // setComponent(() => res.component);
                 setControllerFuncs(res.standardFunctions);
                 setConfig(res.config);
                 // setData(res.standardFunctions.source?.().data || []); // data from controller
+
+                // if (res.standardFunctions.Content) {
+                //     setDynamicContent(() => res.standardFunctions.Content);
+                // }
             });
      
         }
@@ -53,11 +57,13 @@ const ModuleController = () => {
     console.log(Config);
     console.log(user);
 
-    console.log('ControllerFuncsC',ControllerFuncs.source?.().data);
     
-    if (!Config.column) {
+    if (Config?.component_type==1 && !Config.column) {
         return <Loading/>;
     }
+
+    // console.log('ControllerFuncsC',ControllerFuncs.source?.().data);
+
    
     return (
         <>
@@ -80,12 +86,22 @@ const ModuleController = () => {
 
                                 <ErrorBoundary>
                                        
-{/* 
-                                        {Config?.component_type==0 && (
-                                            // <div>
-                                            //     {ControllerFuncs.source?.().view}
-                                            // </div>
+                                        
+                                        {/* {Config?.component_type==0 && (
+                                            <div key='ViewContentCustom'>
+                                                {ControllerFuncs.content?.()}
+                                            </div>
                                         )} */}
+
+                                        {Config?.component_type == 0 && ControllerFuncs.Content && (
+                                            <div key={dynamic} style={{ display: 'block', width: '100%', minHeight: '400px' }}>
+                                                {(() => {
+                                                const CustomView = ControllerFuncs.Content;
+                                                return <CustomView />;
+                                                })()}
+                                            </div>
+                                        )}
+
 
                                         {Config?.component_type==1 && (
                                             <TablePage 

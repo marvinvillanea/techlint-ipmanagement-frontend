@@ -148,6 +148,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,Source,modalClose,data
                                     <option value="view|add|edit">Can Add, Edit</option>
                                     <option value="view|add">Can Add</option>
                                     <option value="view|edit">Can Edit</option>
+                                    <option value="view">View Only</option>
                                 </select>
                                 <label htmlFor="floatingSelect2">User Permission</label>
                             </div>
