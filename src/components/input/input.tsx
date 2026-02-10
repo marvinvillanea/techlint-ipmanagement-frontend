@@ -6,7 +6,8 @@ const InputField = ({
     placeholder = "Password",
     type = "password",
     autoComplete = "email",
-    className=""
+    className="",
+    disabled=false
 }) => {
   return (
     <div className="validation-container">
@@ -19,6 +20,7 @@ const InputField = ({
             onChange={(e) => eventHolder(e.target.value)}
             required={required}
             autoComplete={autoComplete}
+            disabled={disabled}
         />
         <label>{label}</label>
       </div>

@@ -53,7 +53,7 @@ const ModuleController = () => {
     console.log(Config);
     console.log(user);
 
-    
+    console.log('ControllerFuncsC',ControllerFuncs.source?.().data);
     
     if (!Config.column) {
         return <Loading/>;
@@ -72,18 +72,29 @@ const ModuleController = () => {
 
                     <div className="wrapper ">
                             
-                            <HeaderContent eventHolder={handleLogout} name={user?.name}  email={user?.email}  role={user?.role}/>
+                            <HeaderContent eventHolder={handleLogout} name={user?.name}  email={user?.email}  role={user?.role} module={Config?.module_name}/>
 
 
                             <div className="content">
 
 
                                 <ErrorBoundary>
-                                       <TablePage 
-                                            permission={user?.permission} 
-                                            available_buttons={Config?.button}
-                                            Config ={Config}
-                                        />
+                                       
+{/* 
+                                        {Config?.component_type==0 && (
+                                            // <div>
+                                            //     {ControllerFuncs.source?.().view}
+                                            // </div>
+                                        )} */}
+
+                                        {Config?.component_type==1 && (
+                                            <TablePage 
+                                                permission={user?.permission} 
+                                                available_buttons={Config?.button}
+                                                Config ={Config}
+                                                Source = {ControllerFuncs.source?.().data}
+                                            />
+                                        )}
                                 </ErrorBoundary>
                              
 

@@ -7,10 +7,11 @@ import DynamicForm from "./DynamicForm";
 type ButtonPermissionProps = {
   permission: string;       // e.g. "all" or "add|delete"
   available_buttons: string; // e.g. "add|delete|view|edit|all"
-  Config:any
+  Config:any;
+  Source:any
 };
 
-const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, available_buttons, Config }) => {
+const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, available_buttons, Config,Source }) => {
   
   // convert permission to array
   const perms = permission === "all" ? ["add"] : permission.split("|");
@@ -49,8 +50,9 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
       <DynamicModal
         isOpen={isOpen}
         onClose={handleClose}
+        Source={Source} 
         title={'Add ' + Config.module_name}
-        children={<DynamicForm Config={Config} modalClose={handleClose} data={null} type="add" />}
+        children={<DynamicForm Config={Config} modalClose={handleClose} data={null} type="add" Source={Source} />}
         >
       </DynamicModal>
     </>

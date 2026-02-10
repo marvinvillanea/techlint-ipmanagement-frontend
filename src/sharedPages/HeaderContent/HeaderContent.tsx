@@ -4,6 +4,7 @@ const HeaderContent = (
 		name = "",
 		email = "",
 		role = "",
+		module =""
 	}
 ) => {
   return (
@@ -87,7 +88,7 @@ const HeaderContent = (
 		{/*BEGIN Header Holder*/}
 		<div className="header-holder header-holder-desktop">
 			<div className="header-container container-fluid g-4">
-				<h4 className="header-title">Dashboard</h4>
+				<h4 className="header-title">{module}</h4>
 				<i className="header-divider"></i>
 				<div className="header-wrap header-wrap-block justify-content-start">
 					{/*BEGIN Breadcrumb*/}
@@ -96,7 +97,7 @@ const HeaderContent = (
 							<div className="breadcrumb-icon">
 								<i data-feather="home"></i>
 							</div>
-							<span className="breadcrumb-text">Dashboard</span>
+							<span className="breadcrumb-text">{module}</span>
 						</a>
 					</div>
 					{/*END Breadcrumb*/}

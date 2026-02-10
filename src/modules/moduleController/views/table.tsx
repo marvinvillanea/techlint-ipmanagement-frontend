@@ -9,10 +9,11 @@ import DynamicForm from "./DynamicForm";
 type TablePageProps = {
   permission: string;       // e.g. "all" or "add|delete"
   available_buttons: string; // e.g. "add|delete|view|edit|all"
-  Config:any
+  Config:any;
+  Source:any
 };
 
-const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Config }) => {
+const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Config,Source }) => {
   
     console.log('STARTT NOOWWWW');
     console.log(Config);
@@ -127,7 +128,7 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
     console.log('selectedRow',selectedRow);
     // TABLE FUNCTION AND DATA COLUMN 
 
-
+    console.log('Source',Source);
 
   return (
       <div className="container-fluid g-4">
@@ -137,7 +138,7 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                   <div className="portlet">
                       <div className="portlet-header portlet-header-bordered">
                           <h3 className="portlet-title">
-                            <ButtonPermission permission={permission||''} available_buttons={available_buttons||''} Config={Config} />
+                            <ButtonPermission permission={permission||''} available_buttons={available_buttons||''} Config={Config} Source={Source??{}} />
                           </h3>
                       </div>
                       <div className="portlet-body">
@@ -179,13 +180,22 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
                                 {selectedRow && (
                                     <>
                                         {actionType === "view" && (
-                                            <pre>{JSON.stringify(selectedRow, null, 2)}</pre>
+                                            <div>
+                                                 <DynamicForm
+                                                    Config={Config??{}}
+                                                    Source={Source??{}}
+                                                    modalClose={handleClose}
+                                                    data={selectedRow ?? {}}
+                                                    type={actionType}
+                                                />
+                                            </div>
                                         )}
 
                                         {actionType === "edit" && (
                                             <div>
                                             <DynamicForm
                                                 Config={Config??{}}
+                                                Source={Source??{}}
                                                 modalClose={handleClose}
                                                 data={selectedRow ?? {}}
                                                 type={actionType}
@@ -195,7 +205,13 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
 
                                         {actionType === "delete" && (
                                             <div>
-                                                <p>Are you sure delete ID: {selectedRow?.id}?</p>
+                                                 <DynamicForm
+                                                    Config={Config??{}}
+                                                    Source={Source??{}} 
+                                                    modalClose={handleClose}
+                                                    data={selectedRow ?? {}}
+                                                    type={actionType}
+                                                />
                                             </div>
                                         )}
                                     </>

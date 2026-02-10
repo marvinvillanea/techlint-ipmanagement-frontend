@@ -7,11 +7,12 @@ import api from "../../../core/api/axios";
 import Swal from "sweetalert2";
 type DynamicFormProps = {
     Config:any;
+    Source:any;
     modalClose: () => void;
     data?: Record<string, any>;
     type:string;
 };
-const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type}) => {
+const DynamicForm: React.FC<DynamicFormProps> = ({ Config,Source,modalClose,data , type}) => {
   // Define your form structure
     
  
@@ -41,13 +42,31 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
     const submit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
+
+        const confirm = await Swal.fire({
+            icon: (type=="delete"?'warning' : 'info'),
+            title: 'Are you sure?',
+            text: `Are you sure you want to ${type.toUpperCase()} this record?`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Continue',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (!confirm.isConfirmed) return;
         try {
+
+            
+            
             setLoading(true);
             setError("");
             console.log('LOGIN RUNNING');
             // await login(formData.email, formData.password);
 
-            const { data } = await api.post(`/process/${dynamic}/${type}`, formData);
+            const payload = { ...formData };
+            if (type === "edit") {
+                delete payload.password;
+            }
+            const { data } = await api.post(`/process/${dynamic}/${type}`, payload);
 
             console.log(data);
 
@@ -83,22 +102,29 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
         }
     };
 
+    console.log(Source);
+
 
     useEffect(() => {
         if (!data) return;
 
-        const initialData = Object.fromEntries(
-            formFields.map(f => [f.name, data[f.name] ?? ""])
-        );
+        const initialData = {
+            id: data.id, // <-- ADD THIS
+            ...Object.fromEntries(
+                formFields.map(f => [f.name, data[f.name] ?? ""])
+            )
+        };
 
         setFormData(initialData);
     }, [data, formFields]);
 
     const filteredFormFields = formFields.filter(f => {
         // Remove password field on edit
-        if (type === "edit" && f.type === "password") return false;
+        if ((type != "add") && f.type === "password") return false;
         return true;
     });
+
+    const isViewOnly = type === "view" || type === "delete";
 
 
     return (
@@ -107,7 +133,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
                     // Render a custom HTML field if type === "html"
                     if (field.type === "html") {
                     return (
-                          <div key={field.name}  className="validation-container">
+                          <div key={field.name}  className="validation-container"  >
                             <div className="form-floating">
                                 <select
                                     className="form-select"
@@ -115,6 +141,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
                                     onChange={(e) => handleChange(field.name, e.target.value)}
                                     key="floatingSelect"
                                     required
+                                    disabled={isViewOnly}
                                 >
                                     <option value="">Select Permission</option>
                                     <option value="all">ALL(Except Delete)</option>
@@ -128,23 +155,51 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
                     );
                     }
 
+                    if (field.type === "select") {
+                        return (
+                            <div key={field.name}  className="validation-container"  >
+                                <div className="form-floating">
+                                    <select
+                                        className="form-select"
+                                        value={formData[field.name]}
+                                        onChange={(e) => handleChange(field.name, e.target.value)}
+                                        key="floatingSelect ${field.name} "
+                                        required
+                                        disabled={isViewOnly}
+                                    >   
+                                        <option value="">--select--</option>
+                                        {Source[field.name].map((t) => {
+                                            return (
+                                                <option value={t.id}>{t.label}</option>  
+                                            );
+                                        })};
+                                    
+                                    </select>
+                                    <label htmlFor="floatingSelect ${field.name}">{field.label}</label>
+                                </div>
+                            </div>
+                        );
+                    }
+
                     // Otherwise render InputField
                     return (
                         <InputField
                             key={field.name}
                             label={field.label}
                             type={field.type}
-                            required={true}
+                            required={!isViewOnly}
                             value={formData[field.name]}
                             eventHolder={(value) => handleChange(field.name, value)}
                             className={field.className}
+                            disabled={isViewOnly}
                         />
                     );
                 })}
 
 
                 {error && <div className="alert alert-danger">{error}</div>}
-
+            
+              {type!="view" && (
                <div >
                      <ComponentHandler.Button
                         type="submit"
@@ -163,6 +218,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,modalClose,data , type
                     >
                     </ComponentHandler.Button>
                 </div> 
+              )}
 
         </form>
     );

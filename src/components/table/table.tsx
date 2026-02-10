@@ -13,6 +13,7 @@ export default function DataTable({ columns, data}) {
 
 
   return (
+    <div className="table-responsive">
 
     <table className="table table-bordered table-striped table-hover">
       <thead>
@@ -39,6 +40,7 @@ export default function DataTable({ columns, data}) {
         ))}
       </tbody>
     </table>
+    </div>
 
   );
 }
