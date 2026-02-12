@@ -1,31 +1,135 @@
-# React Frontend Docker Setup
+# React JS Project Setup Guide
 
-This project shows how to build and run a React frontend using Docker.
+## 📌 Project Overview
 
-## Prerequisites
+This project is a React JS application built using **Vite**. This guide explains how to install dependencies, configure environment variables, and run the application locally.
 
-- Docker installed on your machine
-- Node.js & npm (only needed for local dev, not for Docker)
+---
 
-## Build Docker Image
+## ⚙️ Prerequisites
+
+Make sure you have the following installed:
+
+* Node.js (Recommended: v18 or higher)
+* npm or yarn package manager
+* Git (optional)
+
+Check installation:
 
 ```bash
-docker build -t my-react-app .
+node -v
+npm -v
 ```
-
-## Build Docker Image
-```
-docker run -d -p 3000:80 --name react-app my-react-app
-```
----
-
-✅ **How it works:**  
-1. Docker builds the React app (`npm run build`).  
-2. Then it serves the optimized static files using Nginx.  
-3. You can access it via `http://localhost:3000`.
 
 ---
 
-If you want, I can also make a **version that supports hot-reloading** for development, so you don’t have to rebuild every time you make a change. This is super convenient for React dev.  
+## 📥 Clone the Repository
 
-Do you want me to do that too?
+```bash
+git clone <your-repository-url>
+cd <project-folder>
+```
+
+---
+
+## 📦 Install Dependencies
+
+Install all required packages:
+
+```bash
+npm install
+```
+
+or if using yarn:
+
+```bash
+yarn install
+```
+
+---
+
+## 🔑 Environment Setup
+
+Create a `.env` file in the root directory and add the following configuration:
+
+```env
+VITE_APP_NAME="IP - Management"
+VITE_API_URL="http://127.0.0.1:8000/api/v1/"
+VITE_CLIENT_NAME=000IP-TECHLINT000
+VITE_CLIENT_TOKEN="St0uVEktCxF8kr3nRkeHCqFotKBLoqqGhMhRGvwiIA0DJcJeEj2VnauzjvzI"
+VITE_DEFAULT_MODULE=dashboard
+```
+
+⚠️ Important:
+
+* Ensure the backend API is running before starting the frontend.
+* Do not commit `.env` to version control if it contains sensitive tokens.
+
+---
+
+## ▶️ Run the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+or:
+
+```bash
+yarn dev
+```
+
+After running, open your browser:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 🏗 Build for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+Preview production build locally:
+
+```bash
+npm run preview
+```
+
+---
+
+## 🚨 Troubleshooting
+
+### Node Modules Issues
+
+If errors occur:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### API Not Working
+
+* Confirm backend server is running.
+* Check `.env` API URL.
+
+---
+
+## 📄 Notes
+
+* Restart the dev server after changing `.env`.
+* Make sure API CORS settings allow frontend access.
+
+---
+
+## 👨‍💻 Author
+
+Techlint Development Team
