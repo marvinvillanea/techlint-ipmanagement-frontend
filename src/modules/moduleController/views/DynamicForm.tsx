@@ -1,7 +1,6 @@
 import React, { useState,useEffect } from "react";
 import InputField from "../../../components/input/input";
-import Loading from "../../../components/CenteredSpinner/Loading";
-import { Navigate,useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ComponentHandler from "../../../components/componentHandler";
 import api from "../../../core/api/axios";
 import Swal from "sweetalert2";
@@ -12,14 +11,32 @@ type DynamicFormProps = {
     data?: Record<string, any>;
     type:string;
 };
+
+type FormField = {
+  name: string;
+  label?: string;
+  type?: string;
+  className?: string;
+  size?:string;
+  break?:BigInteger;
+};
+
+
+type Option = {
+    id: string;
+    label: string;
+};
+
+
 const DynamicForm: React.FC<DynamicFormProps> = ({ Config,Source,modalClose,data , type}) => {
   // Define your form structure
     
  
-    const formFields = Config.form;
-
+    const formFields: FormField[] = Config.form
     // const navigate = useNavigate();
-
+    type SourceType = Record<string, Option[]>;
+    const source: SourceType = Source;
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -38,7 +55,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,Source,modalClose,data
     
     const { dynamic, action } = useParams(); // dynamic = "auth", action = "register"
 
-
+    console.log(action);
     const submit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
@@ -169,7 +186,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ Config,Source,modalClose,data
                                         disabled={isViewOnly}
                                     >   
                                         <option value="">--select--</option>
-                                        {Source[field.name].map((t) => {
+                                        {source[field.name].map((t) => {
                                             return (
                                                 <option value={t.id}>{t.label}</option>  
                                             );

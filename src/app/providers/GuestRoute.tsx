@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import Loading from "../../components/CenteredSpinner/Loading";
 
 
 interface Props {
-  children: React.ReactElement;
+  children: ReactNode;
 }
 
 export default function GuestRoute({ children }: Props) {

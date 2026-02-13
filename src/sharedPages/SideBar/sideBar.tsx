@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState } from "react";
 import techlintLogo from '../../../public/icon-long-techlint.svg';
 import '../../App.css';
 import { menuItems } from "../../config/menuItems";

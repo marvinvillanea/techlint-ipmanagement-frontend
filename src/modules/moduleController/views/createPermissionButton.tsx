@@ -15,7 +15,7 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
   
   // convert permission to array
   const perms = permission === "all" ? ["add"] : permission.split("|");
-
+  console.log(available_buttons);
   // always limit to "add" only
   const buttonsToShow = perms.includes("add") ? ["add"] : [];
 
@@ -50,9 +50,8 @@ const ButtonPermission: React.FC<ButtonPermissionProps> = ({ permission, availab
       <DynamicModal
         isOpen={isOpen}
         onClose={handleClose}
-        Source={Source} 
         title={'Add ' + Config.module_name}
-        children={<DynamicForm Config={Config} modalClose={handleClose} data={null} type="add" Source={Source} />}
+        children={<DynamicForm Config={Config} modalClose={handleClose}  type="add" Source={Source} />}
         >
       </DynamicModal>
     </>

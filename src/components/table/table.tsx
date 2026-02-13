@@ -3,7 +3,13 @@ import {
   getCoreRowModel,
   flexRender
 } from "@tanstack/react-table";
-export default function DataTable({ columns, data}) {
+
+interface DataTableProps {
+  columns: any[];
+  data: any[];
+}
+
+export default function DataTable({ columns, data }: DataTableProps) {
 
   const table = useReactTable({
     columns: [...columns], // ⭐ FIRST COLUMN

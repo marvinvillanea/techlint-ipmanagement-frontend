@@ -3,10 +3,10 @@ interface ButtonProps {
   onClick?: () => void;
   loading?: boolean;
   loadingText?:"Loading...",
-  className?:"",
+  className?:string,
   disabled?: boolean,
   type?: "button" | "submit" | "reset", // <-- use union, not string
-  colorType?:"";
+  colorType?: "primary" | "success" | "danger" | "warning" | "info";
 }
 
 const ButtonComponent = ({
@@ -17,7 +17,7 @@ const ButtonComponent = ({
   disabled = false,
   className="",
   type = "button",
-  colorType = "success"
+  colorType = 'primary'
 }: ButtonProps) => {
 
   

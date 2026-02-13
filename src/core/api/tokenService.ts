@@ -1,6 +1,7 @@
 let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
+
 export const tokenService = {
   setTokens: (a: string, r: string) => {
     accessToken = a;
@@ -9,6 +10,9 @@ export const tokenService = {
   },
 
   getAccessToken: () => accessToken,
+
+
+  getRefToken: () => refreshToken,
 
   getRefreshToken: () => localStorage.getItem("refresh_token"),
 

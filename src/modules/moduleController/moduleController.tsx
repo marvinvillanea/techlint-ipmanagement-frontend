@@ -1,6 +1,6 @@
 import  { useState, useEffect } from "react";
 import { useAuth } from "../../app/providers/AuthProvider";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import SidebarActive from "../../core/utils/SidebarActive";
 import SideBar from "../../sharedPages/SideBar/sideBar";
@@ -10,7 +10,6 @@ import { LoadController } from "../../core/utils/controllerLoader";
 import TablePage from "./views/table";
 import NotFoundPage from "../../sharedPages/NotFoundPage";
 import ErrorBoundary from "../../app/providers/ErrorBoundary";
-import ComponentHandler from "../../components/componentHandler";
 import Loading from "../../components/CenteredSpinner/Loading";
 
 const ModuleController = () => {
@@ -21,7 +20,7 @@ const ModuleController = () => {
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
+    console.log(loading,action);
     const handleLogout = async () => {
         setLoading(true);
         await logout();

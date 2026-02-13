@@ -45,11 +45,14 @@ const TablePage: React.FC<TablePageProps> = ({ permission, available_buttons, Co
         .filter(a => permissionArr.includes(a))
         .filter(a => a !== "add" && a !== "all");
 
+    type RowData = Record<string, any>; // or more specific type
+
+
    
     const actionColumn = {
         id: "actions",
         header: () => <span style={{ width: 80 }}>Action</span>,
-        cell: ({ row }) => (
+        cell: ({ row }: { row: RowData }) => (
         <div style={{ display: "flex", gap: "4px" }}>
             {filteredActions.includes("view") && (
             <ButtonComponent 
